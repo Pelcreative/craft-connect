@@ -11,6 +11,8 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 
+import Logo from "../assets/craftlogo.png";
+
 const Register = () => {
   const navigate = useNavigate();
 
@@ -46,7 +48,7 @@ const Register = () => {
     // Add your registration API here
 
     // After successful registration:
-    // navigate("/login");
+    navigate("/login");
   };
 
   return (
@@ -86,9 +88,11 @@ const Register = () => {
                 className="inline-flex items-center gap-2"
               >
                 <div className="w-10 h-10 bg-[#F36B16] rounded-xl flex items-center justify-center">
-                  <span className="text-white font-black text-lg">
-                    C
-                  </span>
+                  <img
+                      src={Logo}
+                    alt="CraftConnect Logo"
+                   className="h-8 w-8 rounded-full object-cover"
+                                              />
                 </div>
 
                 <span className="text-2xl font-bold text-white">

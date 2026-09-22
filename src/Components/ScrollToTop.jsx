@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
 
 const ScrollToTop = () => {
@@ -28,17 +29,34 @@ const ScrollToTop = () => {
   };
 
   return (
-    <>
+    <AnimatePresence>
       {visible && (
-        <button
+        <motion.button
+          initial={{ opacity: 0, scale: 0, y: 20 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1, 
+            y: [0, -8, 0] // Creates the continuous dancing up-and-down loop
+          }}
+          exit={{ opacity: 0, scale: 0, y: 20 }}
+          transition={{
+            y: {
+              duration: 1.2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            default: { duration: 0.3 }
+          }}
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-orange-300 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-orange-500"
+          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg shadow-orange-500/30 hover:bg-orange-600 transition-colors"
           aria-label="Scroll to top"
         >
           <FaArrowUp />
-        </button>
+        </motion.button>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

@@ -4,6 +4,7 @@ import CategoryGrid from "../Components/CategoryGrid"
 import Footer from "../Components/Footer"
 import NewsletterBanner from "../Components/NewsletterBanner"
 import RequestBanner from "../Components/RequestBanner"
+import ScrollToTop from "../Components/ScrollToTop"
 
 
 const AllCategories = () => {
@@ -14,6 +15,7 @@ const AllCategories = () => {
         <CategoryGrid />
         <RequestBanner />
         <NewsletterBanner />
+        <ScrollToTop />
       <Footer />
     </div>
   )

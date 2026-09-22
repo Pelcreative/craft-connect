@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { FiChevronRight } from "react-icons/fi";
 
+import model from "../assets/artisan3.png"
+
 const CategoriesHero = () => {
   return (
     <section className="relative overflow-hidden bg-[#fff8f2]">
@@ -77,7 +79,7 @@ const CategoriesHero = () => {
           className="absolute right-0 bottom-0 hidden h-full w-[48%] lg:block"
         >
           <img
-            src="/images/categories-hero.jpg"
+            src={model}
             alt="CraftConnect categories"
             className="h-full w-full object-cover object-center"
           />
