@@ -1,4 +1,5 @@
 import type { ErrorRequestHandler, RequestHandler } from "express";
+import { ZodError } from "zod";
 
 export class AppError extends Error {
   constructor(
@@ -8,7 +9,7 @@ export class AppError extends Error {
     super(message);
     this.name = "AppError";
   }
-}  
+}
 
 export const notFound: RequestHandler = (request, _response, next) => {
   next(
@@ -25,9 +26,26 @@ export const errorHandler: ErrorRequestHandler = (
   response,
   _next,
 ) => {
-  const statusCode = error instanceof AppError ? error.statusCode : 500;
-  const message =
-    error instanceof AppError ? error.message : "An unexpected error occurred.";
+  if (error instanceof ZodError) {
+    response.status(400).json({
+      message: "Validation failed.",
+      errors: error.flatten().fieldErrors,
+    });
 
-  response.status(statusCode).json({ message });
+    return;
+  }
+
+  if (error instanceof AppError) {
+    response.status(error.statusCode).json({
+      message: error.message,
+    });
+
+    return;
+  }
+
+  console.error(error);
+
+  response.status(500).json({
+    message: "An unexpected error occurred.",
+  });
 };
