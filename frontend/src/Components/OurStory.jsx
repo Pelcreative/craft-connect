@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
 
-import Story from "../assets/Artisan4.png";
+import Story from "../assets/artisan4.png";
 
 const OurStory = () => {
   return (

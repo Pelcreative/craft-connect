@@ -11,7 +11,7 @@ import {
 import { FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-import img from "../assets/Artisan6.png";
+import img from "../assets/artisan6.png";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
