@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AllCategories from "./Pages/AllCategories";
 import Homepage from "./Pages/Homepage";
-import Navbar from "./Components/Navbar";
+
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Vendor from "./Pages/Vendor";
@@ -13,7 +13,6 @@ import Contact from "./Pages/Contact";
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/categories" element={<AllCategories />} />
