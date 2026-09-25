@@ -1,10 +1,11 @@
 import cors from "cors";
 import express, { type Express } from "express";
-
+import { authRouter } from"./modules/auth/auth.routes.js";
 import { env } from "./config/env.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
 
 export const app: Express = express();
+app.use(authRouter);
 
 app.disable("x-powered-by");
 app.use(
@@ -21,6 +22,12 @@ app.get("/api/health", (_request, response) => {
     service: "craft-connect-api",
   });
 });
+
+
+app.use("/api/auth", authRouter);
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.use(notFound);
 app.use(errorHandler);

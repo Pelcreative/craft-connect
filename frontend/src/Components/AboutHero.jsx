@@ -7,7 +7,7 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-import Hero from "../assets/Artisan2.png";
+import Hero from "../assets/artisan2.png";
 
 const AboutHero = () => {
   return (
