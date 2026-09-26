@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {
   FiSearch,
   FiMapPin,
@@ -9,8 +10,7 @@ import {
   FiStar,
 } from "react-icons/fi";
 
-// import heroImage from "../../assets/images/hero-artisan.jpg";
-import Tailorshop from "../assets/Tailorshop.png"
+import Tailorshop from "../assets/Tailorshop.png";
 
 const Hero = () => {
   const popularSearches = [
@@ -46,59 +46,78 @@ const Hero = () => {
 
   return (
     <section className="w-full overflow-hidden bg-[#fffaf6]">
-
       {/* =================================================
           HERO
-      ================================================= */}
+      ================================================. */}
       <div className="relative">
-
         {/* Decorative background */}
         <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-orange-100/50 blur-3xl" />
 
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:px-6 sm:py-14 md:py-16 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-20">
-
+          
           {/* =================================================
-              LEFT CONTENT
-          ================================================= */}
-          <div className="relative z-10 w-full">
-
+              LEFT CONTENT (Animated with Framer Motion)
+          ================================================ */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="relative z-10 w-full"
+          >
             {/* Label */}
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-3.5 py-2 text-xs font-medium text-orange-500 shadow-sm sm:px-4 sm:text-sm">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-3.5 py-2 text-xs font-medium text-orange-500 shadow-sm sm:px-4 sm:text-sm"
+            >
               <span>✦</span>
               Handcrafted
               <span className="text-gray-300">•</span>
               Authentic
               <span className="text-gray-300">•</span>
               Local
-            </div>
+            </motion.div>
 
             {/* Heading */}
-            <h1 className="max-w-2xl text-[42px] font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[58px] xl:text-[64px]">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-2xl text-[42px] font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[58px] xl:text-[64px]"
+            >
               Find Trusted
               <span className="block text-orange-500">
                 Local Artisans
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Description */}
-            <p className="mt-5 max-w-xl text-[15px] leading-6 text-slate-600 sm:text-base sm:leading-7 lg:text-lg">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-5 max-w-xl text-[15px] leading-6 text-slate-600 sm:text-base sm:leading-7 lg:text-lg"
+            >
               Book the best artisans for your events and projects
               with ease and confidence.
-            </p>
+            </motion.p>
 
             {/* =================================================
                 SEARCH BOX
-            ================================================= */}
-            <div className="mt-7 w-full max-w-3xl rounded-2xl border border-gray-100 bg-white p-2 shadow-xl shadow-orange-100/30 sm:mt-8">
-
+            ================================================ */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-7 w-full max-w-3xl rounded-2xl border border-gray-100 bg-white p-2 shadow-xl shadow-orange-100/30 sm:mt-8"
+            >
               {/* Search input */}
               <div className="flex min-h-[52px] items-center gap-3 border-b border-gray-100 px-3 sm:px-4 lg:border-b-0 lg:border-r">
-
                 <FiSearch
                   size={20}
                   className="flex-shrink-0 text-slate-400"
                 />
-
                 <input
                   type="text"
                   placeholder="What are you looking for?"
@@ -107,7 +126,6 @@ const Hero = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex">
-
                 {/* Location */}
                 <button className="flex min-h-[52px] items-center justify-between gap-3 border-b border-gray-100 px-3 text-left sm:border-r sm:px-4 lg:w-[175px] lg:border-b-0">
                   <div className="flex min-w-0 items-center gap-2">
@@ -115,12 +133,10 @@ const Hero = () => {
                       size={18}
                       className="flex-shrink-0 text-slate-400"
                     />
-
                     <span className="truncate text-sm text-slate-700">
                       All Locations
                     </span>
                   </div>
-
                   <FiChevronDown
                     size={15}
                     className="flex-shrink-0 text-slate-500"
@@ -134,12 +150,10 @@ const Hero = () => {
                       size={18}
                       className="flex-shrink-0 text-slate-400"
                     />
-
                     <span className="truncate text-sm text-slate-700">
                       All Categories
                     </span>
                   </div>
-
                   <FiChevronDown
                     size={15}
                     className="flex-shrink-0 text-slate-500"
@@ -147,40 +161,56 @@ const Hero = () => {
                 </button>
 
                 {/* Search button */}
-                <button className="mt-2 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 text-sm font-semibold text-white transition hover:bg-orange-600 sm:col-span-2 lg:mt-0 lg:w-auto lg:flex-1">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mt-2 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 text-sm font-semibold text-white transition hover:bg-orange-600 sm:col-span-2 lg:mt-0 lg:w-auto lg:flex-1"
+                >
                   <FiSearch size={18} />
                   Search
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
 
             {/* =================================================
                 POPULAR SEARCHES
-            ================================================= */}
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-
+            ================================================ */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-5 flex flex-wrap items-center gap-2"
+            >
               <span className="mr-1 text-xs font-semibold text-slate-700 sm:text-sm">
                 Popular Searches:
               </span>
 
-              {popularSearches.map((search) => (
-                <button
+              {popularSearches.map((search, index) => (
+                <motion.button
                   key={search}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-medium text-slate-600 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-500 sm:text-xs"
                 >
                   {search}
-                </button>
+                </motion.button>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* =================================================
-              HERO IMAGE
-          ================================================= */}
-          <div className="relative mx-auto mt-2 w-full max-w-[620px] lg:mt-0 lg:max-w-none">
-
+              HERO IMAGE (Animated Entry)
+          ================================================ */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, x: 30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+            className="relative mx-auto mt-2 w-full max-w-[620px] lg:mt-0 lg:max-w-none"
+          >
             <div className="relative h-[330px] overflow-hidden rounded-[24px] sm:h-[400px] sm:rounded-[28px] md:h-[450px] lg:h-[500px] lg:rounded-[32px]">
-
               <img
                 src={Tailorshop}
                 alt="Fashion designer working on clothing"
@@ -191,54 +221,62 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
               {/* =================================================
-                  SUPPORT BADGE
-              ================================================= */}
-              <div className="absolute right-3 top-3 rounded-xl bg-white/95 px-3 py-3 shadow-lg backdrop-blur-sm sm:right-5 sm:top-5 sm:rounded-2xl sm:px-5 sm:py-4">
-
+                  SUPPORT BADGE (Floating Animation)
+              ================================================ */}
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="absolute right-3 top-3 rounded-xl bg-white/95 px-3 py-3 shadow-lg backdrop-blur-sm sm:right-5 sm:top-5 sm:rounded-2xl sm:px-5 sm:py-4"
+              >
                 <p className="font-serif text-base italic text-slate-800 sm:text-xl">
                   Support
                 </p>
-
                 <p className="font-serif text-base italic text-orange-500 sm:text-xl">
                   Local Talent
                 </p>
-
                 <div className="mt-1 h-[2px] w-16 bg-orange-500 sm:w-24" />
-              </div>
+              </motion.div>
 
               {/* =================================================
-                  CLIENT BADGE
-              ================================================= */}
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 shadow-xl sm:bottom-6 sm:left-6 sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3">
-
+                  CLIENT BADGE (Floating Animation)
+              ================================================ */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="absolute bottom-4 left-4 flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 shadow-xl sm:bottom-6 sm:left-6 sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3"
+              >
                 <div className="flex -space-x-2">
                   <div className="h-7 w-7 rounded-full border-2 border-white bg-slate-300 sm:h-9 sm:w-9" />
                   <div className="h-7 w-7 rounded-full border-2 border-white bg-orange-200 sm:h-9 sm:w-9" />
                   <div className="h-7 w-7 rounded-full border-2 border-white bg-slate-500 sm:h-9 sm:w-9" />
                 </div>
-
                 <div>
                   <p className="text-base font-bold text-slate-900 sm:text-lg">
                     10K+
                   </p>
-
                   <p className="text-[9px] text-slate-500 sm:text-[11px]">
                     Happy and Satisfied Clients
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* =================================================
-          TRUST FEATURES
-      ================================================= */}
-      <div className="border-t border-gray-100 bg-white">
-
+          TRUST FEATURES (Staggered Scroll Animation)
+      ================================================ */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="border-t border-gray-100 bg-white"
+      >
         <div className="mx-auto grid max-w-7xl grid-cols-2 px-4 py-4 sm:px-6 sm:py-5 lg:grid-cols-4 lg:px-8">
-
           {features.map((feature, index) => (
             <div
               key={feature.title}
@@ -264,16 +302,14 @@ const Hero = () => {
                 <h3 className="text-xs font-bold text-slate-900 sm:text-sm">
                   {feature.title}
                 </h3>
-
                 <p className="mt-1 hidden text-xs text-slate-500 sm:block">
                   {feature.text}
                 </p>
               </div>
             </div>
           ))}
-
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
