@@ -87,3 +87,26 @@ export async function loginUser(
     },
   };
 }
+
+export async function getCurrentUser(userId: string) {
+  const result = await db
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      role: users.role,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  const user = result[0];
+
+  if (!user) {
+    throw new AppError(401, "User account no longer exists.");
+  }
+
+  return user;
+}
+
