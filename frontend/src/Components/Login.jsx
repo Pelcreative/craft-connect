@@ -9,6 +9,7 @@ import {
   FiArrowRight,
   FiCheckCircle,
 } from "react-icons/fi";
+import { loginUser } from "../api/auth.js";
 
 import Logo from "../assets/craftlogo.png";
 
@@ -30,13 +31,19 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Login Data:", formData);
+    try {
+      const { token } = await loginUser(formData);
 
-    // Redirects back to your home route (/) containing your Navbar
-    navigate("/");
+      const storage = rememberMe ? localStorage : sessionStorage;
+      storage.setItem("accessToken", token);
+
+      navigate("/");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (

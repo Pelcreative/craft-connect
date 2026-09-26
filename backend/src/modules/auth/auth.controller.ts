@@ -14,6 +14,7 @@ export async function register(
     input.name,
     input.email,
     input.password,
+    input.role
   );
 
   response.status(201).json({
