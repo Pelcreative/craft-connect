@@ -141,7 +141,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <p className="text-xs text-slate-400 font-medium">Email Us</p>
-                    <p className="text-sm font-bold text-white mt-0.5">hello@craftconnect.com</p>
+                    <p className="text-sm font-bold text-white mt-0.5">craftconnect2026@gmail.com</p>
                   </div>
                 </div>
 
@@ -152,7 +152,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <p className="text-xs text-slate-400 font-medium">Call Us</p>
-                    <p className="text-sm font-bold text-white mt-0.5">+234 800 000 0000</p>
+                    <p className="text-sm font-bold text-white mt-0.5">+234 9017859924</p>
                   </div>
                 </div>
 
