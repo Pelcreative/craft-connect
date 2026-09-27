@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import {registerUser } from "../api/auth.js";
+
 import {
   FiUser,
   FiMail,
@@ -35,20 +37,27 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      alert("Passwords do not match.");
       return;
     }
 
-    console.log("Register Data:", formData);
+    try {
+      await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.accountType === "vendor" ? "artisan" : "client",
+      });
 
-    // Add your registration API here
-
-    // After successful registration:
-    navigate("/login");
+      alert("Account created successfully. Please log in.");
+      navigate("/login");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (

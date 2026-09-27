@@ -10,11 +10,14 @@ export async function registerUser(
   name: string,
   email: string,
   password: string,
+  role: "client" | "artisan",
 ) {
+  const normalizedEmail = email.toLowerCase();
+
   const existingUser = await db
     .select({ id: users.id })
     .from(users)
-    .where(eq(users.email, email))
+    .where(eq(users.email, normalizedEmail))
     .limit(1);
 
   if (existingUser.length > 0) {
@@ -27,8 +30,9 @@ export async function registerUser(
     .insert(users)
     .values({
       name,
-      email,
+      email: normalizedEmail,
       passwordHash,
+      role,
     })
     .returning({
       id: users.id,
@@ -44,10 +48,12 @@ export async function loginUser(
   email: string,
   password: string,
 ) {
+  const normalizedEmail = email.toLowerCase();
+  
   const result = await db
     .select()
     .from(users)
-    .where(eq(users.email, email))
+    .where(eq(users.email, normalizedEmail))
     .limit(1);
 
   const user = result[0];
@@ -87,3 +93,26 @@ export async function loginUser(
     },
   };
 }
+
+export async function getCurrentUser(userId: string) {
+  const result = await db
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      role: users.role,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  const user = result[0];
+
+  if (!user) {
+    throw new AppError(401, "User account no longer exists.");
+  }
+
+  return user;
+}
+

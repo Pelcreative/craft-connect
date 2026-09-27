@@ -1,19 +1,22 @@
 import cors from "cors";
 import express, { type Express } from "express";
-import { authRouter } from"./modules/auth/auth.routes.js";
+
 import { env } from "./config/env.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
+import { authRouter } from "./modules/auth/auth.routes.js";
+import { categoriesRouter } from "./modules/categories/category.routes.js";
 
 export const app: Express = express();
-app.use(authRouter);
 
 app.disable("x-powered-by");
+
 app.use(
   cors({
     origin: env.CLIENT_URL,
     credentials: true,
   }),
 );
+
 app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", (_request, response) => {
@@ -23,11 +26,8 @@ app.get("/api/health", (_request, response) => {
   });
 });
 
-
 app.use("/api/auth", authRouter);
-
-app.use(notFound);
-app.use(errorHandler);
+app.use("/api/categories", categoriesRouter);
 
 app.use(notFound);
 app.use(errorHandler);

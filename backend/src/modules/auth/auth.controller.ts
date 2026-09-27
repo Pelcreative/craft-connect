@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 
 import { registerSchema, loginSchema } from "./auth.schema.js";
-import { registerUser, loginUser } from "./auth.service.js";
+import { registerUser, loginUser, getCurrentUser } from "./auth.service.js";
+import type { AuthenticatedRequest } from "../../middleware/auth.js";
 
 export async function register(
   request: Request,
@@ -13,6 +14,7 @@ export async function register(
     input.name,
     input.email,
     input.password,
+    input.role
   );
 
   response.status(201).json({
@@ -32,4 +34,20 @@ export async function login(
   );
 
   response.status(200).json(result);
+}
+
+export async function me(
+  request: Request,
+  response: Response,
+) {
+  const authenticatedRequest =
+    request as AuthenticatedRequest;
+
+  const user = await getCurrentUser(
+    authenticatedRequest.user.sub,
+  );
+
+  response.status(200).json({
+    user,
+  });
 }
