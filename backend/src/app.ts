@@ -5,6 +5,7 @@ import { env } from "./config/env.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { categoriesRouter } from "./modules/categories/category.routes.js";
+import { artisansRouter } from "./modules/artisans/artisan.routes.js";
 
 export const app: Express = express();
 
@@ -28,6 +29,7 @@ app.get("/api/health", (_request, response) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/categories", categoriesRouter);
+app.use("/api/artisans", artisansRouter);
 
 app.use(notFound);
 app.use(errorHandler);
