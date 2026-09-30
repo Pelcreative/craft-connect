@@ -18,6 +18,7 @@ import CustomerReview from "./Components/CustomerReview";
 import CustomerNotification from "./Components/CustomerNotification";
 import CustomerSettings from "./Components/CustomerSettings";
 import CustomerLogout from "./Components/CustomerLogout";
+import CustomerMakePayment from "./Components/CustomerMakePayment";
 
 
 function App() {
@@ -39,7 +40,8 @@ function App() {
         <Route path="/reviews" element={<CustomerReview />} />
         <Route path="/notifications" element={<CustomerNotification />} />
         <Route path="/settings" element={<CustomerSettings/>} />
-         <Route path="/logout" element={<CustomerLogout/>} />
+        <Route path="/logout" element={<CustomerLogout/>} />
+        <Route path="/makepayments" element={<CustomerMakePayment/>} />
 
        
       </Routes>

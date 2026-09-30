@@ -17,6 +17,8 @@ import {
 
 import Logo from "../assets/craftlogo.png";
 
+import { FaPaypal } from "react-icons/fa";
+
 /* ========================================
    NAVIGATION ITEMS
 ======================================== */
@@ -60,6 +62,12 @@ const navigationItems = [
     path: "/settings",
     icon: Settings,
   },
+  {
+    label: "MakePayments",
+    path: "/makepayments",
+    icon: FaPaypal,
+  },
+  
   {
     label: "Logout",
     path: "/logout",
