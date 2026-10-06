@@ -23,6 +23,9 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   role: userRole("role").default("client").notNull(),
+  emailVerifiedAt: timestamp("email_verified_at", {
+    withTimezone: true,
+  }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -30,6 +33,27 @@ export const users = pgTable("users", {
     .defaultNow()
     .notNull(),
 });
+
+
+export const emailVerificationTokens = pgTable(
+  "email_verification_tokens",
+  {
+    tokenHash: varchar("token_hash", { length: 64 })
+      .primaryKey(),
+
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+
+    expiresAt: timestamp("expires_at", { withTimezone: true })
+      .notNull(),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+);
+
 
 export const categories = pgTable("categories", {
   id: uuid("id").defaultRandom().primaryKey(),

@@ -53,7 +53,7 @@ const Register = () => {
         role: formData.accountType === "vendor" ? "artisan" : "client",
       });
 
-      alert("Account created successfully. Please log in.");
+      alert("Account created. Check your email to verify it before logging in.");
       navigate("/login");
     } catch (error) {
       alert(error.message);
