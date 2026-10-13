@@ -1,43 +1,60 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import AllCategories from "./Pages/AllCategories";
+// Public pages
 import Homepage from "./Pages/Homepage";
-
-import Login from "./Components/Login";
-import Register from "./Components/Register";
+import AllCategories from "./Pages/AllCategories";
 import Vendor from "./Pages/Vendor";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
-import CustomerDashboard from "./Components/CustomerDashboard";
 import VerifyEmail from "./Pages/VerifyEmail";
 import Artisans from "./Pages/Artisans";
 
-// Import your sidebar layout wrapper (adjust the path if it's located elsewhere)
-import CustomerDashboardLayout from "./Components/CustomerSidebar"; 
+// Authentication
+import Login from "./Components/Login";
+import Register from "./Components/Register";
+
+// Customer dashboard pages
+import CustomerDashboard from "./Components/CustomerDashboard";
+import CustomerBooking from "./Components/CustomerBoooking";
+import CustomerMessage from "./Components/CustomerMessage";
+import CustomerSavedVendors from "./Components/CustomerSavedVendors";
+import CustomerReview from "./Components/CustomerReview";
+import CustomerNotification from "./Components/CustomerNotification";
+import CustomerSettings from "./Components/CustomerSettings";
+import CustomerLogout from "./Components/CustomerLogout";
+import CustomerMakePayment from "./Components/CustomerMakePayment";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public pages */}
         <Route path="/" element={<Homepage />} />
         <Route path="/categories" element={<AllCategories />} />
         <Route path="/artisans" element={<Artisans />} />
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
 
-        {/* Wrapped with the layout so the fixed sidebar and mobile header appear correctly */}
+        {/* Customer dashboard */}
+        <Route path="/dashboard" element={<CustomerDashboard />} />
+        <Route path="/bookings" element={<CustomerBooking />} />
+        <Route path="/messages" element={<CustomerMessage />} />
+        <Route path="/vendors" element={<CustomerSavedVendors />} />
+        <Route path="/reviews" element={<CustomerReview />} />
         <Route
-          path="/dashboard"
-          element={
-            <CustomerDashboardLayout>
-              <CustomerDashboard />
-            </CustomerDashboardLayout>
-          }
+          path="/notifications"
+          element={<CustomerNotification />}
         />
+        <Route path="/settings" element={<CustomerSettings />} />
+        <Route path="/logout" element={<CustomerLogout />} />
+        <Route path="/makepayments" element={<CustomerMakePayment />} />
       </Routes>
     </BrowserRouter>
   );

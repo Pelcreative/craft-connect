@@ -1,76 +1,167 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-
 import {
-  FiCalendar,
-  FiCheckCircle,
-  FiClock,
-  FiCreditCard,
-  FiMapPin,
-  FiArrowRight,
-  FiShoppingBag,
-} from "react-icons/fi";
+  CalendarDays,
+  CheckCircle2,
+  Users,
+  WalletCards,
+  MapPin,
+  MessageSquare,
+  Heart,
+  Star,
+  Camera,
+  Scissors,
+  CalendarCheck,
+  Grid3X3,
+  ChevronRight,
+  // ChevronDown,
+  // Bookmark,
+  // CreditCard,
+  Sparkles,
+  ArrowUpRight,
+} from "lucide-react";
 
-import UserSidebar from "./CustomerSidebar";
+import CustomerSidebar from "./CustomerSidebar";
+import DashboardNavbar from "./DashboardNavbar";
 
-/* ========================================
-   DASHBOARD DATA
-======================================== */
+/* =========================================================
+   DATA
+========================================================= */
 
 const stats = [
   {
     title: "Upcoming Bookings",
     value: "2",
-    icon: FiCalendar,
-    color: "bg-blue-50 text-blue-600",
+    change: "1 from last week",
+    icon: CalendarDays,
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-500",
   },
   {
-    title: "Completed",
+    title: "Completed Bookings",
     value: "12",
-    icon: FiCheckCircle,
-    color: "bg-green-50 text-green-600",
+    change: "3 from last week",
+    icon: CheckCircle2,
+    iconBg: "bg-purple-50",
+    iconColor: "text-purple-500",
   },
   {
     title: "Saved Vendors",
     value: "8",
-    icon: FiClock,
-    color: "bg-purple-50 text-purple-600",
+    change: "2 new this week",
+    icon: Users,
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-500",
   },
   {
-    title: "Pending Payments",
-    value: "1",
-    icon: FiCreditCard,
-    color: "bg-orange-50 text-orange-600",
+    title: "Total Spent",
+    value: "₦320,000",
+    change: "12% from last month",
+    icon: WalletCards,
+    iconBg: "bg-green-50",
+    iconColor: "text-green-500",
   },
 ];
 
-const recentOrders = [
+const bookings = [
   {
-    id: 1,
-    vendor: "Tasty Bites Catering",
-    date: "April 15, 2025",
+    name: "Zainab's Fashion Hub",
+    type: "Fashion Designer & Tailor",
+    date: "May 28, 2025",
+    time: "10:00 AM",
+    location: "Lagos, Nigeria",
+    status: "Confirmed",
     image:
-      "https://images.unsplash.com/photo-1555244162-803834f70033?w=200&q=80",
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=85",
   },
   {
-    id: 2,
-    vendor: "Glam by Zoe",
-    date: "April 14, 2025",
+    name: "Tolu Events & Decor",
+    type: "Event Photographer",
+    date: "May 30, 2025",
+    time: "2:00 PM",
+    location: "Lagos, Nigeria",
+    status: "Pending",
     image:
-      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&q=80",
-  },
-  {
-    id: 3,
-    vendor: "Brown Ivy Events",
-    date: "March 28, 2025",
-    image:
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=200&q=80",
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=85",
   },
 ];
 
-/* ========================================
-   ANIMATIONS
-======================================== */
+const categories = [
+  {
+    name: "Fashion Designers",
+    icon: Sparkles,
+    style: "bg-pink-50 text-pink-500",
+  },
+  {
+    name: "Caterers",
+    icon: Sparkles,
+    style: "bg-orange-50 text-orange-500",
+  },
+  {
+    name: "Photographers",
+    icon: Camera,
+    style: "bg-blue-50 text-blue-500",
+  },
+  {
+    name: "Decorators",
+    icon: Sparkles,
+    style: "bg-purple-50 text-purple-500",
+  },
+  {
+    name: "Makeup Artists",
+    icon: Sparkles,
+    style: "bg-red-50 text-red-500",
+  },
+  {
+    name: "Tailors",
+    icon: Scissors,
+    style: "bg-cyan-50 text-cyan-500",
+  },
+  {
+    name: "Event Planners",
+    icon: CalendarCheck,
+    style: "bg-violet-50 text-violet-500",
+  },
+  {
+    name: "Others",
+    icon: Grid3X3,
+    style: "bg-slate-100 text-slate-600",
+  },
+];
+
+const vendors = [
+  {
+    name: "Zainab's Fashion Hub",
+    category: "Fashion Designer & Tailor",
+    rating: "4.8",
+    reviews: "124",
+    location: "Lagos, Nigeria",
+    image:
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=85",
+  },
+  {
+    name: "Tolu Events & Decor",
+    category: "Event Photographer",
+    rating: "4.7",
+    reviews: "98",
+    location: "Lagos, Nigeria",
+    image:
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=85",
+  },
+  {
+    name: "Emeka's Photography",
+    category: "Portrait Photographer",
+    rating: "4.9",
+    reviews: "87",
+    location: "Abuja, Nigeria",
+    image:
+      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&q=85",
+  },
+];
+
+/* =========================================================
+   ANIMATION SETTINGS
+========================================================= */
 
 const containerVariants = {
   hidden: {},
@@ -84,265 +175,964 @@ const containerVariants = {
 const itemVariants = {
   hidden: {
     opacity: 0,
-    y: 25,
+    y: 20,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.45,
       ease: "easeOut",
     },
   },
 };
 
-const cardHover = {
-  y: -5,
-  transition: {
-    duration: 0.25,
-  },
-};
+/* =========================================================
+   MAIN DASHBOARD
+========================================================= */
 
-/* ========================================
-   STAT CARD
-======================================== */
+export default function CustomerDashboard() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-const StatCard = ({ title, value, icon: Icon, color }) => {
   return (
-    <motion.div
-      variants={itemVariants}
-      whileHover={cardHover}
-      className="group rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-lg"
+    <div
+      className="
+        min-h-screen
+        bg-[#f7faff]
+        text-slate-800
+      "
     >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <motion.h3
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-            className="mt-3 text-3xl font-bold text-slate-900"
-          >
-            {value}
-          </motion.h3>
-        </div>
-        <div
-          className={`flex h-11 w-11 items-center justify-center rounded-xl ${color} transition-transform duration-300 group-hover:scale-110`}
-        >
-          <Icon size={20} />
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+      {/* =====================================================
+          SIDEBAR
+      ===================================================== */}
 
-/* ========================================
-   UPCOMING BOOKING
-======================================== */
-
-const UpcomingBooking = () => {
-  return (
-    <motion.section
-      variants={itemVariants}
-      className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm"
-    >
-      <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-        <div>
-          <h2 className="text-lg font-bold text-slate-900">Upcoming Booking</h2>
-          <p className="mt-1 text-sm text-slate-500">Your next scheduled service</p>
-        </div>
-        <div className="hidden rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600 sm:block">
-          Upcoming
-        </div>
-      </div>
-
-      <div className="p-6">
-        <div className="flex flex-col gap-5 sm:flex-row">
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            className="h-48 w-full overflow-hidden rounded-xl sm:h-32 sm:w-40"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80"
-              alt="Birthday cake"
-              className="h-full w-full object-cover"
-            />
-          </motion.div>
-
-          <div className="flex flex-1 flex-col justify-between">
-            <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-                Birthday Cake
-              </span>
-              <h3 className="mt-1 text-xl font-bold text-slate-900">
-                Sweet Delights
-              </h3>
-
-              <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-500">
-                <span className="flex items-center gap-2">
-                  <FiCalendar className="text-blue-500" /> May 20, 2025
-                </span>
-                <span className="flex items-center gap-2">
-                  <FiClock className="text-blue-500" /> 2:00 PM
-                </span>
-                <span className="flex items-center gap-2">
-                  <FiMapPin className="text-blue-500" /> Lagos, Nigeria
-                </span>
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600 sm:mt-4"
-            >
-              View Details
-              <FiArrowRight />
-            </motion.button>
-          </div>
-        </div>
-      </div>
-    </motion.section>
-  );
-};
-
-/* ========================================
-   RECENT ORDERS
-======================================== */
-
-const RecentOrders = () => {
-  return (
-    <motion.section
-      variants={itemVariants}
-      className="rounded-2xl border border-slate-100 bg-white shadow-sm"
-    >
-      <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-        <div>
-          <h2 className="text-lg font-bold text-slate-900">Recent Orders</h2>
-          <p className="mt-1 text-sm text-slate-500">Your latest vendor activities</p>
-        </div>
-        <button
-          type="button"
-          className="flex items-center gap-1 text-sm font-semibold text-blue-600 transition hover:text-blue-700"
-        >
-          View All
-          <FiArrowRight size={15} />
-        </button>
-      </div>
-
-      <div className="divide-y divide-slate-100">
-        {recentOrders.map((order, index) => (
-          <motion.div
-            key={order.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            whileHover={{ backgroundColor: "#f8fafc" }}
-            className="flex items-center justify-between gap-4 px-6 py-4"
-          >
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl">
-                <img
-                  src={order.image}
-                  alt={order.vendor}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="min-w-0">
-                <h3 className="truncate text-sm font-semibold text-slate-800">
-                  {order.vendor}
-                </h3>
-                <p className="mt-1 text-xs text-slate-500">{order.date}</p>
-              </div>
-            </div>
-
-            <span className="flex-shrink-0 rounded-full bg-green-50 px-3 py-1.5 text-xs font-semibold text-green-600">
-              Confirmed
-            </span>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
-};
-
-/* ========================================
-   CUSTOMER DASHBOARD
-======================================== */
-
-const CustomerDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-slate-50">
-      {/* SIDEBAR */}
-      <UserSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
+      <CustomerSidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
       />
 
-      {/* MAIN CONTENT CONTAINER */}
-      <div className="lg:ml-[270px]">
-        <main className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            {/* Dashboard Header */}
+      {/* =====================================================
+          MAIN CONTENT
+      ===================================================== */}
+
+      <div
+        className="
+          min-h-screen
+          lg:pl-[270px]
+        "
+      >
+        {/* Navbar */}
+        <DashboardNavbar
+          setIsOpen={setIsSidebarOpen}
+        />
+
+        <main
+          className="
+            px-4
+            py-6
+            sm:px-6
+            lg:px-8
+          "
+        >
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="
+              mx-auto
+              max-w-[1600px]
+            "
+          >
+            {/* =================================================
+                PAGE TITLE
+            ================================================= */}
+
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
+              variants={itemVariants}
+              className="
+                mb-6
+                flex
+                flex-col
+                gap-4
+                sm:flex-row
+                sm:items-center
+                sm:justify-between
+              "
             >
-              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                <div>
-                  <p className="mb-1 text-sm font-medium text-blue-600">
-                    Customer Dashboard
-                  </p>
-                  <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                    Welcome back, Ada!
-                  </h1>
-                  <p className="mt-2 text-sm text-slate-500 sm:text-base">
-                    Here's what's happening with your bookings.
-                  </p>
+              <div>
+                <p
+                  className="
+                    mb-1
+                    text-sm
+                    font-semibold
+                    text-orange-500
+                  "
+                >
+                  Customer Portal
+                </p>
+
+                <h1
+                  className="
+                    text-2xl
+                    font-bold
+                    tracking-tight
+                    text-[#09234a]
+                    sm:text-3xl
+                  "
+                >
+                  Customer Dashboard
+                </h1>
+
+                <p
+                  className="
+                    mt-1
+                    text-sm
+                    text-slate-500
+                  "
+                >
+                  Manage your bookings, vendors and activities.
+                </p>
+              </div>
+
+              {/* Logout */}
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/login";
+                }}
+                className="
+                  w-fit
+                  rounded-xl
+                  border
+                  border-slate-200
+                  bg-white
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-semibold
+                  text-slate-600
+                  shadow-sm
+                  transition
+
+                  hover:border-red-200
+                  hover:bg-red-50
+                  hover:text-red-500
+                "
+              >
+                Logout
+              </button>
+            </motion.div>
+
+            {/* =================================================
+                WELCOME BANNER
+            ================================================= */}
+
+            <motion.section
+              variants={itemVariants}
+              className="
+                relative
+                mb-6
+                min-h-[130px]
+                overflow-hidden
+                rounded-2xl
+                border
+                border-orange-100
+                bg-gradient-to-r
+                from-orange-50
+                via-orange-50
+                to-white
+              "
+            >
+              <div
+                className="
+                  relative
+                  z-10
+                  max-w-xl
+                  p-6
+                  sm:p-7
+                "
+              >
+                <div
+                  className="
+                    mb-3
+                    flex
+                    h-10 w-10
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-orange-100
+                    text-xl
+                  "
+                >
+                  👋
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="flex w-fit items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700"
+                <h2
+                  className="
+                    text-xl
+                    font-bold
+                    text-[#09234a]
+                    sm:text-2xl
+                  "
                 >
-                  <FiShoppingBag />
-                  Explore Vendors
-                </motion.button>
+                  Welcome back, Ada!
+                </h2>
+
+                <p
+                  className="
+                    mt-2
+                    text-sm
+                    leading-6
+                    text-slate-500
+                  "
+                >
+                  Here's what's happening with your
+                  bookings, messages and more.
+                </p>
               </div>
-            </motion.div>
 
-            {/* Statistics */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
-            >
-              {stats.map((stat) => (
-                <StatCard key={stat.title} {...stat} />
-              ))}
-            </motion.div>
+              {/* Banner image */}
+              <div
+                className="
+                  absolute
+                  inset-y-0
+                  right-0
+                  hidden
+                  w-[45%]
+                  overflow-hidden
+                  lg:block
+                "
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1000&q=85"
+                  alt=""
+                  className="
+                    h-full
+                    w-full
+                    object-cover
+                  "
+                />
 
-            {/* Main Dashboard Content */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2"
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    bg-gradient-to-r
+                    from-orange-50
+                    via-orange-50/30
+                    to-transparent
+                  "
+                />
+              </div>
+            </motion.section>
+
+            {/* =================================================
+                STAT CARDS
+            ================================================= */}
+
+            <div
+              className="
+                grid
+                grid-cols-1
+                gap-4
+                sm:grid-cols-2
+                xl:grid-cols-4
+              "
             >
-              <UpcomingBooking />
-              <RecentOrders />
-            </motion.div>
-          </div>
+              {stats.map((stat) => {
+                const Icon = stat.icon;
+
+                return (
+                  <motion.div
+                    key={stat.title}
+                    variants={itemVariants}
+                    whileHover={{
+                      y: -5,
+                      boxShadow:
+                        "0 15px 35px rgba(15, 23, 42, 0.08)",
+                    }}
+                    className="
+                      rounded-2xl
+                      border
+                      border-slate-200
+                      bg-white
+                      p-5
+                      shadow-sm
+                    "
+                  >
+                    <div
+                      className="
+                        flex
+                        items-center
+                        gap-3
+                      "
+                    >
+                      <div
+                        className={`
+                          flex
+                          h-11 w-11
+                          items-center
+                          justify-center
+                          rounded-full
+                          ${stat.iconBg}
+                        `}
+                      >
+                        <Icon
+                          size={21}
+                          className={stat.iconColor}
+                        />
+                      </div>
+
+                      <p
+                        className="
+                          text-sm
+                          text-slate-500
+                        "
+                      >
+                        {stat.title}
+                      </p>
+                    </div>
+
+                    <h3
+                      className="
+                        mt-4
+                        text-2xl
+                        font-bold
+                        text-[#09234a]
+                      "
+                    >
+                      {stat.value}
+                    </h3>
+
+                    <p
+                      className="
+                        mt-2
+                        text-xs
+                        font-medium
+                        text-emerald-500
+                      "
+                    >
+                      ↑ {stat.change}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* =================================================
+                MAIN TWO-COLUMN AREA
+            ================================================= */}
+
+            <div
+              className="
+                mt-6
+                grid
+                grid-cols-1
+                gap-6
+                xl:grid-cols-[minmax(0,1fr)_350px]
+              "
+            >
+              {/* =================================================
+                  LEFT COLUMN
+              ================================================= */}
+
+              <div
+                className="
+                  min-w-0
+                  space-y-6
+                "
+              >
+                {/* ===============================================
+                    BOOKINGS + CATEGORIES
+                =============================================== */}
+
+                <div
+                  className="
+                    grid
+                    grid-cols-1
+                    gap-6
+                    2xl:grid-cols-[1.15fr_0.85fr]
+                  "
+                >
+                  {/* UPCOMING BOOKINGS */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="
+                      rounded-2xl
+                      border
+                      border-slate-200
+                      bg-white
+                      p-5
+                      shadow-sm
+                    "
+                  >
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        items-center
+                        justify-between
+                      "
+                    >
+                      <h2
+                        className="
+                          text-base
+                          font-bold
+                          text-[#09234a]
+                          sm:text-lg
+                        "
+                      >
+                        Upcoming Bookings
+                      </h2>
+
+                      <button
+                        className="
+                          text-xs
+                          font-semibold
+                          text-blue-500
+                          transition
+                          hover:text-orange-500
+                        "
+                      >
+                        View All
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {bookings.map((booking, index) => (
+                        <motion.div
+                          key={booking.name}
+                          initial={{
+                            opacity: 0,
+                            x: -15,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            x: 0,
+                          }}
+                          transition={{
+                            delay: 0.2 + index * 0.1,
+                          }}
+                          className="
+                            flex
+                            flex-col
+                            gap-4
+                            rounded-xl
+                            border
+                            border-slate-100
+                            p-3
+                            transition
+                            hover:border-orange-100
+                            hover:bg-orange-50/30
+                            sm:flex-row
+                          "
+                        >
+                          <img
+                            src={booking.image}
+                            alt={booking.name}
+                            className="
+                              h-24
+                              w-full
+                              rounded-xl
+                              object-cover
+                              sm:h-20
+                              sm:w-20
+                            "
+                          />
+
+                          <div className="min-w-0 flex-1">
+                            <div
+                              className="
+                                flex
+                                flex-wrap
+                                items-start
+                                justify-between
+                                gap-2
+                              "
+                            >
+                              <div>
+                                <h3
+                                  className="
+                                    text-sm
+                                    font-bold
+                                    text-[#09234a]
+                                  "
+                                >
+                                  {booking.name}
+                                </h3>
+
+                                <p
+                                  className="
+                                    mt-1
+                                    text-xs
+                                    text-slate-500
+                                  "
+                                >
+                                  {booking.type}
+                                </p>
+                              </div>
+
+                              <span
+                                className={`
+                                  rounded-full
+                                  px-3
+                                  py-1
+                                  text-[10px]
+                                  font-semibold
+                                  ${
+                                    booking.status ===
+                                    "Confirmed"
+                                      ? "bg-emerald-50 text-emerald-600"
+                                      : "bg-orange-50 text-orange-500"
+                                  }
+                                `}
+                              >
+                                {booking.status}
+                              </span>
+                            </div>
+
+                            <div
+                              className="
+                                mt-3
+                                flex
+                                flex-wrap
+                                gap-x-4
+                                gap-y-2
+                                text-xs
+                                text-slate-500
+                              "
+                            >
+                              <span
+                                className="
+                                  flex
+                                  items-center
+                                  gap-1
+                                "
+                              >
+                                <CalendarDays size={13} />
+                                {booking.date} • {booking.time}
+                              </span>
+
+                              <span
+                                className="
+                                  flex
+                                  items-center
+                                  gap-1
+                                "
+                              >
+                                <MapPin size={13} />
+                                {booking.location}
+                              </span>
+                            </div>
+
+                            <div
+                              className="
+                                mt-3
+                                flex
+                                flex-wrap
+                                gap-2
+                              "
+                            >
+                              <button
+                                className="
+                                  rounded-lg
+                                  border
+                                  border-slate-200
+                                  px-3 py-2
+                                  text-[11px]
+                                  font-medium
+                                  text-slate-600
+                                  transition
+                                  hover:border-orange-300
+                                  hover:text-orange-500
+                                "
+                              >
+                                View Details
+                              </button>
+
+                              <button
+                                className="
+                                  flex
+                                  items-center
+                                  gap-1
+                                  rounded-lg
+                                  bg-orange-500
+                                  px-3 py-2
+                                  text-[11px]
+                                  font-semibold
+                                  text-white
+                                  transition
+                                  hover:bg-orange-600
+                                "
+                              >
+                                <MessageSquare size={12} />
+                                Message Vendor
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.section>
+
+                  {/* POPULAR CATEGORIES */}
+                  <motion.section
+                    variants={itemVariants}
+                    className="
+                      rounded-2xl
+                      border
+                      border-slate-200
+                      bg-white
+                      p-5
+                      shadow-sm
+                    "
+                  >
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        items-center
+                        justify-between
+                      "
+                    >
+                      <h2
+                        className="
+                          text-base
+                          font-bold
+                          text-[#09234a]
+                          sm:text-lg
+                        "
+                      >
+                        Popular Categories
+                      </h2>
+
+                      <button
+                        className="
+                          text-xs
+                          font-semibold
+                          text-blue-500
+                        "
+                      >
+                        View All
+                      </button>
+                    </div>
+
+                    <div
+                      className="
+                        grid
+                        grid-cols-2
+                        gap-3
+                        sm:grid-cols-4
+                        2xl:grid-cols-4
+                      "
+                    >
+                      {categories.map((category, index) => {
+                        const Icon = category.icon;
+
+                        return (
+                          <motion.button
+                            key={category.name}
+                            initial={{
+                              opacity: 0,
+                              scale: 0.9,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              scale: 1,
+                            }}
+                            transition={{
+                              delay: 0.2 + index * 0.05,
+                            }}
+                            whileHover={{
+                              y: -4,
+                            }}
+                            className="
+                              flex
+                              min-h-[105px]
+                              flex-col
+                              items-center
+                              justify-center
+                              rounded-xl
+                              border
+                              border-slate-100
+                              p-3
+                              transition
+                              hover:border-orange-100
+                              hover:shadow-sm
+                            "
+                          >
+                            <div
+                              className={`
+                                mb-2
+                                flex
+                                h-11 w-11
+                                items-center
+                                justify-center
+                                rounded-full
+                                ${category.style}
+                              `}
+                            >
+                              <Icon size={21} />
+                            </div>
+
+                            <span
+                              className="
+                                text-center
+                                text-[10px]
+                                font-medium
+                                text-slate-600
+                              "
+                            >
+                              {category.name}
+                            </span>
+                          </motion.button>
+                        );
+                      })}
+                    </div>
+                  </motion.section>
+                </div>
+
+                {/* ===============================================
+                    RECENT VENDORS
+                =============================================== */}
+
+                <motion.section
+                  variants={itemVariants}
+                  className="
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    bg-white
+                    p-5
+                    shadow-sm
+                  "
+                >
+                  <div
+                    className="
+                      mb-5
+                      flex
+                      items-center
+                      justify-between
+                    "
+                  >
+                    <h2
+                      className="
+                        text-base
+                        font-bold
+                        text-[#09234a]
+                        sm:text-lg
+                      "
+                    >
+                      Recent Vendors
+                    </h2>
+
+                    <button
+                      className="
+                        text-xs
+                        font-semibold
+                        text-blue-500
+                      "
+                    >
+                      View All
+                    </button>
+                  </div>
+
+                  <div
+                    className="
+                      grid
+                      grid-cols-1
+                      gap-4
+                      md:grid-cols-3
+                    "
+                  >
+                    {vendors.map((vendor) => (
+                      <motion.article
+                        key={vendor.name}
+                        whileHover={{
+                          y: -5,
+                        }}
+                        className="
+                          rounded-xl
+                          border
+                          border-slate-100
+                          p-3
+                        "
+                      >
+                        <div className="relative">
+                          <img
+                            src={vendor.image}
+                            alt={vendor.name}
+                            className="
+                              h-36
+                              w-full
+                              rounded-xl
+                              object-cover
+                            "
+                          />
+
+                          <button
+                            className="
+                              absolute
+                              right-2
+                              top-2
+                              flex
+                              h-8 w-8
+                              items-center
+                              justify-center
+                              rounded-full
+                              bg-white/90
+                              text-red-500
+                              shadow-sm
+                              backdrop-blur
+                            "
+                          >
+                            <Heart size={15} />
+                          </button>
+                        </div>
+
+                        <h3
+                          className="
+                            mt-3
+                            text-sm
+                            font-bold
+                            text-[#09234a]
+                          "
+                        >
+                          {vendor.name}
+                        </h3>
+
+                        <p
+                          className="
+                            mt-1
+                            text-xs
+                            text-slate-500
+                          "
+                        >
+                          {vendor.category}
+                        </p>
+
+                        <div
+                          className="
+                            mt-2
+                            flex
+                            items-center
+                            gap-1
+                            text-xs
+                          "
+                        >
+                          <Star
+                            size={13}
+                            className="
+                              fill-orange-400
+                              text-orange-400
+                            "
+                          />
+
+                          <span
+                            className="
+                              font-semibold
+                              text-slate-700
+                            "
+                          >
+                            {vendor.rating}
+                          </span>
+
+                          <span className="text-slate-400">
+                            ({vendor.reviews})
+                          </span>
+                        </div>
+
+                        <p
+                          className="
+                            mt-2
+                            flex
+                            items-center
+                            gap-1
+                            text-xs
+                            text-slate-500
+                          "
+                        >
+                          <MapPin size={12} />
+                          {vendor.location}
+                        </p>
+
+                        <button
+                          className="
+                            mt-3
+                            flex
+                            w-full
+                            items-center
+                            justify-center
+                            gap-2
+                            rounded-lg
+                            border
+                            border-blue-100
+                            py-2
+                            text-xs
+                            font-semibold
+                            text-blue-600
+                            transition
+                            hover:bg-blue-50
+                          "
+                        >
+                          View Profile <ArrowUpRight size={13} />
+                        </button>
+                      </motion.article>
+                    ))}
+                  </div>
+                </motion.section>
+              </div>
+
+              {/* =================================================
+                  RIGHT COLUMN (SIDEBAR / WIDGETS)
+              ================================================= */}
+              <div className="space-y-6">
+                <motion.section
+                  variants={itemVariants}
+                  className="
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    bg-white
+                    p-5
+                    shadow-sm
+                  "
+                >
+                  <h2
+                    className="
+                      text-base
+                      font-bold
+                      text-[#09234a]
+                      sm:text-lg
+                    "
+                  >
+                    Quick Actions
+                  </h2>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Frequently used shortcuts.
+                  </p>
+                  
+                  <div className="mt-4 space-y-2">
+                    <button className="flex w-full items-center justify-between rounded-xl border border-slate-100 p-3 text-sm font-medium text-slate-700 transition hover:border-orange-200 hover:bg-orange-50/50">
+                      <span>Explore Categories</span>
+                      <ChevronRight size={16} className="text-slate-400" />
+                    </button>
+                    <button className="flex w-full items-center justify-between rounded-xl border border-slate-100 p-3 text-sm font-medium text-slate-700 transition hover:border-orange-200 hover:bg-orange-50/50">
+                      <span>Saved Vendors</span>
+                      <ChevronRight size={16} className="text-slate-400" />
+                    </button>
+                    <button className="flex w-full items-center justify-between rounded-xl border border-slate-100 p-3 text-sm font-medium text-slate-700 transition hover:border-orange-200 hover:bg-orange-50/50">
+                      <span>Billing & Payments</span>
+                      <ChevronRight size={16} className="text-slate-400" />
+                    </button>
+                  </div>
+                </motion.section>
+              </div>
+
+            </div>
+          </motion.div>
         </main>
       </div>
     </div>
   );
-};
-
-export default CustomerDashboard;
+}
