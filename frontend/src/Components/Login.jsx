@@ -9,7 +9,10 @@ import {
   FiArrowRight,
   FiCheckCircle,
 } from "react-icons/fi";
-import { loginUser } from "../api/auth.js";
+import {
+  loginUser,
+  resendVerificationEmail,
+} from "../api/auth.js";
 
 import Logo from "../assets/craftlogo.png";
 
@@ -18,6 +21,10 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [resendMessage, setResendMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -34,6 +41,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoginError("");
+    setResendMessage("");
+    setIsSubmitting(true);
+
     try {
       const { token } = await loginUser(formData);
 
@@ -42,7 +53,29 @@ const Login = () => {
 
       navigate("/");
     } catch (error) {
-      alert(error.message);
+      setLoginError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (!formData.email.trim()) {
+      setLoginError("Enter your email address first.");
+      return;
+    }
+
+    setLoginError("");
+    setResendMessage("");
+    setIsResending(true);
+
+    try {
+      const data = await resendVerificationEmail(formData.email);
+      setResendMessage(data.message);
+    } catch (error) {
+      setLoginError(error.message);
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -180,6 +213,36 @@ const Login = () => {
 
               <form onSubmit={handleSubmit} className="space-y-5">
 
+                {loginError && (
+                <div
+                  role="alert"
+                  className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700"
+                >
+                  <p>{loginError}</p>
+
+                  {loginError === "Verify your email before logging in." && (
+                    <button
+                      type="button"
+                      onClick={handleResendVerification}
+                      disabled={isResending}
+                      className="mt-2 font-semibold text-[#F36B16] hover:underline disabled:opacity-60"
+                    >
+                      {isResending
+                        ? "Sending verification email..."
+                        : "Resend verification email"}
+                    </button>
+                  )}
+                </div>
+                )}
+
+                {resendMessage && (
+                  <p
+                    role="status"
+                    className="rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700"
+                  >
+                    {resendMessage}
+                  </p>
+                )}
                 {/* Email */}
                 <div>
                   <label className="block text-sm font-semibold text-[#07172D] mb-2">
@@ -266,9 +329,10 @@ const Login = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full h-14 bg-[#F36B16] hover:bg-[#df5d0c] text-white font-semibold rounded-xl flex items-center justify-center gap-3 transition-colors shadow-lg shadow-[#F36B16]/20"
                 >
-                  Login
+                  {isSubmitting ? "Logging in..." : "Login"}
                   <FiArrowRight />
                 </motion.button>
 

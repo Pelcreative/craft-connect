@@ -1,8 +1,19 @@
 import type { Request, Response } from "express";
 
-import { registerSchema, loginSchema } from "./auth.schema.js";
-import { registerUser, loginUser, getCurrentUser } from "./auth.service.js";
 import type { AuthenticatedRequest } from "../../middleware/auth.js";
+import {
+  loginSchema,
+  registerSchema,
+  resendVerificationSchema,
+  verifyEmailSchema,
+} from "./auth.schema.js";
+import {
+  getCurrentUser,
+  loginUser,
+  registerUser,
+  resendVerificationEmail,
+  verifyEmail,
+} from "./auth.service.js";
 
 export async function register(
   request: Request,
@@ -14,10 +25,11 @@ export async function register(
     input.name,
     input.email,
     input.password,
-    input.role
+    input.role,
   );
 
   response.status(201).json({
+    message: "Account created. Check your email to verify it.",
     user,
   });
 }
@@ -36,6 +48,33 @@ export async function login(
   response.status(200).json(result);
 }
 
+export async function verify(
+  request: Request,
+  response: Response,
+) {
+  const { token } = verifyEmailSchema.parse(request.body);
+
+  await verifyEmail(token);
+
+  response.status(200).json({
+    message: "Email verified. You can now log in.",
+  });
+}
+
+export async function resendVerification(
+  request: Request,
+  response: Response,
+) {
+  const { email } = resendVerificationSchema.parse(request.body);
+
+  await resendVerificationEmail(email);
+
+  response.status(200).json({
+    message:
+      "If an unverified account exists, a verification email was sent.",
+  });
+}
+
 export async function me(
   request: Request,
   response: Response,
@@ -47,7 +86,5 @@ export async function me(
     authenticatedRequest.user.sub,
   );
 
-  response.status(200).json({
-    user,
-  });
+  response.status(200).json({ user });
 }

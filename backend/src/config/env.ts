@@ -8,6 +8,9 @@ const environmentSchema = z.object({
   CLIENT_URL: z.string().url().default("http://localhost:3000"),
   DATABASE_URL: z.string().url(),
   JWT_SECRET: z.string().min(32),
+  RESEND_API_KEY: z.string().min(1),
+  EMAIL_FROM: z.string().min(1),
+  APP_URL: z.string().url(),
 });
 
 export const env = environmentSchema.parse(process.env);

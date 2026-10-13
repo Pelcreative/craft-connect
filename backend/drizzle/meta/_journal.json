@@ -15,6 +15,13 @@
       "when": 1790423465465,
       "tag": "0001_normal_black_tom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791286750101,
+      "tag": "0002_mean_silver_surfer",
+      "breakpoints": true
     }
   ]
 }

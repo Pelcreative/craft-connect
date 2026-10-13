@@ -41,3 +41,45 @@ export async function loginUser({ email, password }) {
 
   return data;
 }
+
+
+export async function verifyEmail(token) {
+  const response = await fetch(`${API_URL}/auth/verify-email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Email verification failed.");
+  }
+
+  return data;
+}
+
+export async function resendVerificationEmail(email) {
+  const response = await fetch(
+    `${API_URL}/auth/resend-verification`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    },
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Could not resend verification email.",
+    );
+  }
+
+  return data;
+}
