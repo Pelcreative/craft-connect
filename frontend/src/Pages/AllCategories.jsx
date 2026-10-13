@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import CategoriesHero from "../Components/CategoriesHero"
 import CategoryFilters from "../Components/CategoryFilters"
 import CategoryGrid from "../Components/CategoryGrid"
@@ -9,12 +10,18 @@ import ScrollToTop from "../Components/ScrollToTop"
 
 
 const AllCategories = () => {
+  const navigate = useNavigate()
+
   return (
     <div>
       <Navbar />
         <CategoriesHero />
         <CategoryFilters />
-        <CategoryGrid />
+        <CategoryGrid
+          onCategoryClick={(category) =>
+            navigate(`/artisans?category=${encodeURIComponent(category.slug)}`)
+          }
+        />
         <RequestBanner />
         <NewsletterBanner />
         <ScrollToTop />

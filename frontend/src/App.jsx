@@ -10,6 +10,7 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import CustomerDashboard from "./Components/CustomerDashboard";
 import VerifyEmail from "./Pages/VerifyEmail";
+import Artisans from "./Pages/Artisans";
 
 // Import your sidebar layout wrapper (adjust the path if it's located elsewhere)
 import CustomerDashboardLayout from "./Components/CustomerSidebar"; 
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/categories" element={<AllCategories />} />
+        <Route path="/artisans" element={<Artisans />} />
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />

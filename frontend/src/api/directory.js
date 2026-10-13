@@ -21,3 +21,15 @@ export async function getCategories() {
   const data = await getJson("/categories");
   return data.categories;
 }
+
+export async function getArtisans(filters = {}) {
+  const query = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (value) query.set(key, value);
+  }
+
+  const suffix = query.size ? `?${query.toString()}` : "";
+  const data = await getJson(`/artisans${suffix}`);
+  return data.artisans;
+}
