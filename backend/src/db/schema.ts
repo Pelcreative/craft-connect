@@ -17,6 +17,14 @@ export const userRole = pgEnum("user_role", [
   "admin",
 ]);
 
+export const serviceRequestStatus = pgEnum("service_request_status", [
+  "pending",
+  "accepted",
+  "declined",
+  "completed",
+  "cancelled",
+]);
+
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 120 }).notNull(),
@@ -105,3 +113,22 @@ export const artisanCategories = pgTable(
     }),
   ],
 );
+
+export const serviceRequests = pgTable("service_requests", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  clientId: uuid("client_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  artisanId: uuid("artisan_id")
+    .notNull()
+    .references(() => artisanProfiles.userId, { onDelete: "cascade" }),
+  title: varchar("title", { length: 160 }).notNull(),
+  message: text("message").notNull(),
+  status: serviceRequestStatus("status").default("pending").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
