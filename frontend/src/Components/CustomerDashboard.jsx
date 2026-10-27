@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   CalendarDays,
@@ -23,6 +23,7 @@ import {
 
 import CustomerSidebar from "./CustomerSidebar";
 import DashboardNavbar from "./DashboardNavbar";
+import { getMyServiceRequests } from "../api/requests";
 
 /* =========================================================
    DATA
@@ -193,6 +194,14 @@ const itemVariants = {
 
 export default function CustomerDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [serviceRequests, setServiceRequests] = useState([]);
+  const [requestsError, setRequestsError] = useState("");
+
+  useEffect(() => {
+    getMyServiceRequests()
+      .then(setServiceRequests)
+      .catch((error) => setRequestsError(error.message));
+  }, []);
 
   return (
     <div
@@ -297,6 +306,8 @@ export default function CustomerDashboard() {
               {/* Logout */}
               <button
                 onClick={() => {
+                  localStorage.removeItem("accessToken");
+                  sessionStorage.removeItem("accessToken");
                   localStorage.removeItem("token");
                   window.location.href = "/login";
                 }}
@@ -423,6 +434,45 @@ export default function CustomerDashboard() {
                     to-transparent
                   "
                 />
+              </div>
+            </motion.section>
+
+            <motion.section
+              variants={itemVariants}
+              className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+            >
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-bold text-[#09234a]">My Service Requests</h2>
+                  <p className="mt-1 text-sm text-slate-500">Track requests you have sent to artisans.</p>
+                </div>
+                <span className="rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-600">
+                  {serviceRequests.length}
+                </span>
+              </div>
+
+              {requestsError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{requestsError}</p>}
+              {!requestsError && serviceRequests.length === 0 && (
+                <p className="text-sm text-slate-500">You have not sent any service requests yet.</p>
+              )}
+              <div className="space-y-3">
+                {serviceRequests.slice(0, 3).map((serviceRequest) => {
+                  const partner = serviceRequest.artisan
+                    ? serviceRequest.artisan.businessName
+                    : serviceRequest.client?.name;
+
+                  return (
+                    <div key={serviceRequest.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 p-4">
+                      <div>
+                        <p className="font-semibold text-[#09234a]">{serviceRequest.title}</p>
+                        <p className="mt-1 text-sm text-slate-500">{partner}</p>
+                      </div>
+                      <span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold capitalize text-orange-600">
+                        {serviceRequest.status}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </motion.section>
 

@@ -18,6 +18,15 @@ type ProfileInput = {
   categoryIds: string[];
 };
 
+type ProfileUpdateInput = {
+  businessName?: string | undefined;
+  bio?: string | undefined;
+  city?: string | undefined;
+  state?: string | undefined;
+  profileImageUrl?: string | undefined;
+  categoryIds?: string[] | undefined;
+};
+
 type ArtisanCategory = {
   id: string;
   name: string;
@@ -86,6 +95,73 @@ export async function createArtisanProfile(
         categoryId,
       })),
     );
+
+    return {
+      ...profile,
+      categoryIds: uniqueCategoryIds,
+    };
+  });
+}
+
+export async function updateArtisanProfile(
+  userId: string,
+  input: ProfileUpdateInput,
+) {
+  const [existingProfile] = await db
+    .select({ userId: artisanProfiles.userId })
+    .from(artisanProfiles)
+    .where(eq(artisanProfiles.userId, userId))
+    .limit(1);
+
+  if (!existingProfile) {
+    throw new AppError(404, "Create an artisan profile before editing it.");
+  }
+
+  const uniqueCategoryIds = input.categoryIds
+    ? [...new Set(input.categoryIds)]
+    : undefined;
+
+  if (uniqueCategoryIds) {
+    const validCategories = await db
+      .select({ id: categories.id })
+      .from(categories)
+      .where(inArray(categories.id, uniqueCategoryIds));
+
+    if (validCategories.length !== uniqueCategoryIds.length) {
+      throw new AppError(400, "One or more category IDs are invalid.");
+    }
+  }
+
+  return db.transaction(async (transaction) => {
+    const [profile] = await transaction
+      .update(artisanProfiles)
+      .set({
+        ...(input.businessName !== undefined && { businessName: input.businessName }),
+        ...(input.bio !== undefined && { bio: input.bio }),
+        ...(input.city !== undefined && { city: input.city }),
+        ...(input.state !== undefined && { state: input.state }),
+        ...(input.profileImageUrl !== undefined && { profileImageUrl: input.profileImageUrl }),
+        updatedAt: new Date(),
+      })
+      .where(eq(artisanProfiles.userId, userId))
+      .returning();
+
+    if (!profile) {
+      throw new AppError(500, "Could not update artisan profile.");
+    }
+
+    if (uniqueCategoryIds) {
+      await transaction
+        .delete(artisanCategories)
+        .where(eq(artisanCategories.artisanId, userId));
+
+      await transaction.insert(artisanCategories).values(
+        uniqueCategoryIds.map((categoryId) => ({
+          artisanId: userId,
+          categoryId,
+        })),
+      );
+    }
 
     return {
       ...profile,
@@ -207,4 +283,18 @@ export async function getArtisanById(artisanId: string) {
   }
 
   return artisan;
+}
+
+export async function getMyArtisanProfile(userId: string) {
+  const [profile] = await db
+    .select({ userId: artisanProfiles.userId })
+    .from(artisanProfiles)
+    .where(eq(artisanProfiles.userId, userId))
+    .limit(1);
+
+  if (!profile) {
+    throw new AppError(404, "Create an artisan profile before editing it.");
+  }
+
+  return getArtisanById(userId);
 }

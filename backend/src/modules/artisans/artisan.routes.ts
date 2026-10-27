@@ -6,7 +6,9 @@ import {
   createProfile,
   featured,
   getById,
+  getMine,
   list,
+  updateProfile,
 } from "./artisan.controller.js";
 
 export const artisansRouter: ExpressRouter = Router();
@@ -19,6 +21,20 @@ artisansRouter.post(
   requireAuth,
   requireRole("artisan"),
   createProfile,
+);
+
+artisansRouter.get(
+  "/profile/me",
+  requireAuth,
+  requireRole("artisan"),
+  getMine,
+);
+
+artisansRouter.patch(
+  "/profile",
+  requireAuth,
+  requireRole("artisan"),
+  updateProfile,
 );
 
 artisansRouter.get("/:artisanId", getById);

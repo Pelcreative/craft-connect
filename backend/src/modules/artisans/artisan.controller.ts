@@ -5,6 +5,7 @@ import {
   artisanListQuerySchema,
   artisanParamsSchema,
   createArtisanProfileSchema,
+  updateArtisanProfileSchema,
 } from "./artisan.schema.js";
 
 import {
@@ -12,6 +13,8 @@ import {
   getArtisanById,
   getFeaturedArtisans,
   listArtisans,
+  getMyArtisanProfile,
+  updateArtisanProfile,
 } from "./artisan.service.js";
 
 
@@ -68,4 +71,19 @@ export async function getById(
   response.status(200).json({
     artisan,
   });
+}
+
+export async function getMine(request: Request, response: Response) {
+  const authenticatedRequest = request as AuthenticatedRequest;
+  const artisan = await getMyArtisanProfile(authenticatedRequest.user.sub);
+
+  response.status(200).json({ artisan });
+}
+
+export async function updateProfile(request: Request, response: Response) {
+  const input = updateArtisanProfileSchema.parse(request.body);
+  const authenticatedRequest = request as AuthenticatedRequest;
+  const artisan = await updateArtisanProfile(authenticatedRequest.user.sub, input);
+
+  response.status(200).json({ artisan });
 }

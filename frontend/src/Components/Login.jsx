@@ -46,12 +46,13 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const { token } = await loginUser(formData);
+      const { token, user } = await loginUser(formData);
 
       const storage = rememberMe ? localStorage : sessionStorage;
       storage.setItem("accessToken", token);
+      storage.setItem("currentUser", JSON.stringify(user));
 
-      navigate("/");
+      navigate(user.role === "artisan" ? "/artisan/dashboard" : "/dashboard");
     } catch (error) {
       setLoginError(error.message);
     } finally {

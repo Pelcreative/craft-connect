@@ -33,3 +33,8 @@ export async function getArtisans(filters = {}) {
   const data = await getJson(`/artisans${suffix}`);
   return data.artisans;
 }
+
+export async function getArtisan(artisanId) {
+  const data = await getJson(`/artisans/${artisanId}`);
+  return data.artisan;
+}

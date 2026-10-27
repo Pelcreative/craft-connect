@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FiMapPin, FiSearch, FiStar } from "react-icons/fi";
 
 import Footer from "../Components/Footer";
@@ -112,6 +112,12 @@ const Artisans = () => {
                 <p className="mt-1 text-sm text-gray-600">{artisan.categories.map((item) => item.name).join(", ")}</p>
                 <p className="mt-3 flex items-center gap-2 text-sm text-gray-500"><FiMapPin className="text-[#f36b21]" />{artisan.city}{artisan.state ? `, ${artisan.state}` : ""}</p>
                 <p className="mt-3 flex items-center gap-1 text-sm font-semibold text-gray-700"><FiStar className="fill-[#f9a825] text-[#f9a825]" />{artisan.averageRating.toFixed(1)} <span className="font-normal text-gray-400">({artisan.reviewCount})</span></p>
+                <Link
+                  to={`/artisans/${artisan.id}`}
+                  className="mt-5 inline-flex rounded-lg bg-[#f36b21] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#d95716]"
+                >
+                  View profile
+                </Link>
               </div>
             </article>
           ))}

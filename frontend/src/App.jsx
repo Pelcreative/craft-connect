@@ -9,6 +9,9 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import VerifyEmail from "./Pages/VerifyEmail";
 import Artisans from "./Pages/Artisans";
+import ArtisanProfile from "./Pages/ArtisanProfile";
+import ArtisanDashboard from "./Pages/ArtisanDashboard";
+import ArtisanProfileSettings from "./Pages/ArtisanProfileSettings";
 
 // Authentication
 import Login from "./Components/Login";
@@ -33,6 +36,9 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/categories" element={<AllCategories />} />
         <Route path="/artisans" element={<Artisans />} />
+        <Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+        <Route path="/artisan/dashboard" element={<ArtisanDashboard />} />
+        <Route path="/artisan/profile" element={<ArtisanProfileSettings />} />
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
